@@ -124,14 +124,15 @@ def fetch_page(pid):
     try: 
         url = "http://www.ed2000.com/ShowFile.asp?FileID=%s" % pid
         tree = BaseCrawler().parse(url)
+        data = {}
         meta_info = parse_meta_info(tree)
         ed2k_list = parse_ed2k_addrs(tree)
         magnet = parse_magnet(tree)
         fix_views(meta_info, ed2k_list, magnet)
-        ret = {'ret': 0}
-        ret.update(meta_info)
-        if ed2k_list: ret['ed2k'] = ed2k_list
-        if magnet: ret['magnet'] = magnet
+        data.update(meta_info)
+        if ed2k_list: data['ed2k'] = ed2k_list
+        if magnet: data['magnet'] = magnet
+        ret = {'ret': 0, 'data': data}
     except Exception, e:
         ret = {'ret': -1, 'errmsg': str(e)}
     finally:
